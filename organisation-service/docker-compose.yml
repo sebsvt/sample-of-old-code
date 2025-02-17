@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  organisation_server:
+    # image: docker.io/sebastian992/auth_server
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "8081:8081"
+    depends_on:
+      - organisation_database
+  organisation_database:
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_DB}
+    env_file:
+      - .env
+    volumes:
+      - organisation_volumn:/var/lib/postgres
+    command: -p 5433
+    expose:
+      - 5433
+    ports:
+      - 5433:5433
+
+volumes:
+  organisation_volumn:
